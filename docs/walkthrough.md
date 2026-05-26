@@ -24,12 +24,14 @@ Hemos creado y estructurado los siguientes componentes en el repositorio:
   - `POST /api/eventos` que orquesta la geocodificación y el enriquecimiento del clima antes de persistir los datos de forma robusta.
 
 ### 4. Interfaz Premium de Curaduría (Frontend)
-- `templates/index.html`: Estructura semántica de pantalla partida (Layout Split) adaptativa. Integra armoniosamente el campo de **Dirección** en el formulario lateral y la grilla estilo Bento en el panel derecho.
-- `static/css/styles.css`: Traduce la paleta otoñal premium de Stitch (tonos arena, terracota, ocre y verde musgo), bento-grid, sombras personalizadas, transiciones fluidas, tipografías personalizadas (Manrope/Work Sans) y scrollbars estilizados a **CSS Vanilla puro**, garantizando máxima velocidad sin dependencias CDN pesadas.
-- `static/js/app.js`: Implementa el **Algoritmo de Flujo Optimista**:
+- `templates/index.html`: Estructura semántica de pantalla partida (Layout Split) adaptativa. Integra armoniosamente el campo de **Dirección** en el formulario lateral y la grilla estilo Bento en el panel derecho. Cuenta con la estructura del modal del mapa con fondo translúcido.
+- `static/css/styles.css`: Traduce la paleta otoñal premium de Stitch (tonos arena, terracota, ocre y verde musgo), bento-grid, sombras personalizadas, transiciones fluidas, tipografías personalizadas (Manrope/Work Sans) y scrollbars estilizados a **CSS Vanilla puro**, garantizando máxima velocidad sin dependencias CDN pesadas. Además, incluye los estilos responsivos del modal del mapa interactivo con efecto de desenfoque (*glassmorphism*) y botones adaptados.
+- `static/js/app.js`: Implementa el **Algoritmo de Flujo Optimista** y la visualización de mapas:
   - Captura los envíos y añade inmediatamente una tarjeta semitransparente (`opacity: 0.6`) y animada ("Procesando curaduría...").
   - Bloquea temporalmente el formulario para evitar dobles envíos.
   - Al completar la petición, inyecta los datos geocodificados y las alertas de clima del backend, reestableciendo el formulario con una transición de éxito de 2 segundos.
+  - Inyecta dinámicamente un botón interactivo **"Ver mapa"** en las tarjetas que tienen coordenadas de Nominatim válidas.
+  - Al hacer clic, abre el modal e inicializa de forma asíncrona un mapa de **Leaflet.js**, ubicando un marcador con popup informativo sobre el evento de forma gratuita y sin tokens.
   - Actualiza en tiempo real el contador de eventos activos en la tarjeta de métricas Bento.
 
 ---

@@ -837,3 +837,170 @@ h1, h2, h3, h4, .logo {
         grid-template-columns: 1fr;
     }
 }
+
+/* ==========================================================================
+   MODAL DE MAPA CON GLASSMORPHISM Y DETALLES OTOÑALES
+   ========================================================================== */
+.map-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(35, 25, 22, 0.4);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.map-modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.map-modal-content {
+    background-color: #ffffff;
+    border: 1px solid var(--outline-variant);
+    border-radius: 12px;
+    width: 90%;
+    max-width: 650px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 20px 40px rgba(35, 25, 22, 0.25);
+    transform: translateY(20px);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow: hidden;
+}
+
+.map-modal-overlay.active .map-modal-content {
+    transform: translateY(0);
+}
+
+.map-modal-header {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid rgba(137, 114, 106, 0.12);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.map-modal-header h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin: 0;
+    letter-spacing: -0.01em;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    transition: all var(--transition-speed);
+}
+
+.close-btn:hover {
+    background-color: var(--surface-container-low);
+    color: var(--primary);
+}
+
+.map-modal-body {
+    padding: 0;
+    height: 350px;
+    background-color: var(--bg-main);
+    position: relative;
+}
+
+#map-container {
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+}
+
+.map-modal-footer {
+    padding: 1.25rem 1.5rem;
+    border-top: 1px solid rgba(137, 114, 106, 0.12);
+    background-color: var(--bg-panel);
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.map-modal-footer .material-symbols-outlined {
+    font-size: 1.25rem;
+    margin-top: 1px;
+}
+
+/* Personalización otoñal sutil para los elementos de Leaflet */
+.leaflet-bar {
+    border: 1px solid var(--outline-variant) !important;
+    box-shadow: 0 4px 10px rgba(35, 25, 22, 0.08) !important;
+    border-radius: 6px !important;
+    overflow: hidden;
+}
+
+.leaflet-bar a {
+    background-color: #ffffff !important;
+    color: var(--text-main) !important;
+    border-bottom: 1px solid var(--outline-variant) !important;
+    transition: all var(--transition-speed);
+}
+
+.leaflet-bar a:hover {
+    background-color: var(--surface-container-low) !important;
+    color: var(--primary) !important;
+}
+
+.leaflet-popup-content-wrapper {
+    border-radius: var(--border-radius) !important;
+    border: 1px solid var(--outline-variant) !important;
+    box-shadow: 0 8px 20px rgba(35, 25, 22, 0.12) !important;
+    padding: 0.25rem !important;
+    font-family: var(--font-body);
+}
+
+.leaflet-popup-tip {
+    border: 1px solid var(--outline-variant) !important;
+    box-shadow: 0 8px 20px rgba(35, 25, 22, 0.12) !important;
+}
+
+/* Enlace "Ver mapa" en la tarjeta de evento */
+.card-map-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    color: var(--color-accent);
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    font-size: 0.8125rem;
+    margin-top: 0.25rem;
+    transition: color var(--transition-speed);
+}
+
+.card-map-link:hover {
+    color: var(--primary);
+    text-decoration: underline;
+}
+
+.card-map-link .material-symbols-outlined {
+    font-size: 1rem;
+}
+

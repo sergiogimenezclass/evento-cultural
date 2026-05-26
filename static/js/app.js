@@ -12,6 +12,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const grid = document.getElementById('eventos-grid');
     const statsTotalActive = document.getElementById('stats-total-active');
 
+    // Referencias y variables globales de Leaflet Map
+    let leafletMap = null;
+    const mapModal = document.getElementById('map-modal');
+    const mapModalTitle = document.getElementById('map-modal-title');
+    const mapModalAddress = document.getElementById('map-modal-address');
+    const closeMapBtn = document.getElementById('close-map-btn');
+
     // Inicialización
     actualizarStatusLabel();
     cargarEventos();
@@ -19,6 +26,30 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================================================
     // MANEJADORES DE EVENTOS
     // ==========================================================================
+
+    // Delegación de eventos para abrir el mapa interactivo
+    grid.addEventListener('click', (e) => {
+        const mapLink = e.target.closest('.card-map-link');
+        if (mapLink) {
+            e.preventDefault();
+            const lat = parseFloat(mapLink.getAttribute('data-lat'));
+            const lng = parseFloat(mapLink.getAttribute('data-lng'));
+            const title = mapLink.getAttribute('data-title');
+            const address = mapLink.getAttribute('data-address');
+            abrirMapa(lat, lng, title, address);
+        }
+    });
+
+    // Controladores de cierre del modal del mapa
+    closeMapBtn.addEventListener('click', cerrarMapa);
+    mapModal.addEventListener('click', (e) => {
+        if (e.target === mapModal) cerrarMapa();
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && mapModal.classList.contains('active')) {
+            cerrarMapa();
+        }
+    });
 
     // Cambio en el Switch de Estado (Borrador/Publicado)
     statusToggle.addEventListener('change', actualizarStatusLabel);
@@ -231,6 +262,14 @@ document.addEventListener('DOMContentLoaded', () => {
             ? evento.direccion_original 
             : (evento.direccion_normalizada || evento.direccion_original);
 
+        // Generar el enlace del mapa si el evento no es optimista y cuenta con coordenadas
+        const tieneCoordenadas = !esOptimista && evento.latitud !== null && evento.longitud !== null;
+        const enlaceMapaHTML = tieneCoordenadas ? `
+            <a class="card-map-link" data-lat="${evento.latitud}" data-lng="${evento.longitud}" data-title="${evento.titulo}" data-address="${direccionAMostrar}">
+                <span class="material-symbols-outlined">map</span> Ver mapa
+            </a>
+        ` : '';
+
         return `
             <div class="card-header">
                 <span class="badge ${badgeClass}">${evento.estado}</span>
@@ -248,7 +287,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                     <div class="meta-item">
                         <span class="material-symbols-outlined">location_on</span>
-                        <span>${direccionAMostrar}</span>
+                        <div style="display: flex; flex-direction: column; align-items: flex-start;">
+                            <span>${direccionAMostrar}</span>
+                            ${enlaceMapaHTML}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -359,5 +401,67 @@ document.addEventListener('DOMContentLoaded', () => {
             const totalPublicados = grid.querySelectorAll('.badge-published').length;
             statsTotalActive.textContent = totalPublicados;
         }
+    }
+
+    // ==========================================================================
+    // INTEGRACIÓN Y FUNCIONES DEL MAPA (LEAFLET.JS)
+    // ==========================================================================
+
+    function abrirMapa(lat, lng, titulo, direccion) {
+        // Asignar los metadatos al modal
+        mapModalTitle.textContent = titulo;
+        mapModalAddress.textContent = direccion;
+        
+        // Activar visibilidad del modal (desencadena transición CSS de opacidad y glassmorphism)
+        mapModal.classList.add('active');
+
+        // Leaflet necesita que el contenedor DOM esté 100% renderizado y visible antes de inicializarse.
+        // Usamos un pequeño delay de 150ms para esperar que finalice la animación CSS de entrada.
+        setTimeout(() => {
+            try {
+                // Si ya existe un mapa instanciado previamente, lo removemos para evitar fugas de memoria
+                // y el error "Map container is already initialized" de Leaflet.
+                if (leafletMap !== null) {
+                    leafletMap.remove();
+                }
+
+                // Crear mapa centrado en las coordenadas
+                leafletMap = L.map('map-container').setView([lat, lng], 15);
+
+                // Agregar capa de teselas (OpenStreetMap estándar)
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 19,
+                    attribution: '© OpenStreetMap contributors'
+                }).addTo(leafletMap);
+
+                // Personalizar el marcador y agregar popup
+                const marcador = L.marker([lat, lng]).addTo(leafletMap);
+                marcador.bindPopup(`
+                    <div style="font-family: var(--font-body); font-size: 13px;">
+                        <h4 style="font-family: var(--font-headline); font-weight: 700; color: var(--primary); margin: 0 0 4px 0;">${titulo}</h4>
+                        <p style="margin: 0; color: var(--text-muted);">${direccion}</p>
+                    </div>
+                `).openPopup();
+
+                // Forzar a Leaflet a recalcular sus dimensiones en caso de fallas de renderizado parcial
+                leafletMap.invalidateSize();
+
+            } catch (error) {
+                console.error("Error al inicializar Leaflet Map:", error);
+            }
+        }, 150);
+    }
+
+    function cerrarMapa() {
+        mapModal.classList.remove('active');
+        
+        // Esperamos que termine la transición de salida (300ms) para destruir la instancia
+        // y liberar recursos de memoria del mapa.
+        setTimeout(() => {
+            if (leafletMap !== null) {
+                leafletMap.remove();
+                leafletMap = null;
+            }
+        }, 300);
     }
 });
