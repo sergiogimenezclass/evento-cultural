@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Gestor de Curaduría Cultural</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Work+Sans:wght@400;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container-low": "#fff1ec",
+                      "on-tertiary-fixed": "#001f25",
+                      "on-background": "#231916",
+                      "surface-container": "#fdeae4",
+                      "on-primary-container": "#fffbff",
+                      "primary-container": "#ba582f",
+                      "on-secondary-fixed": "#171e00",
+                      "tertiary-container": "#008092",
+                      "on-tertiary-fixed-variant": "#004e5a",
+                      "error-container": "#ffdad6",
+                      "primary-fixed-dim": "#ffb59a",
+                      "on-secondary": "#ffffff",
+                      "weather-normal": "#E6CCB2",
+                      "on-primary-fixed-variant": "#7e2c04",
+                      "weather-risk": "#DDB892",
+                      "text-main": "#2C2520",
+                      "on-tertiary": "#ffffff",
+                      "on-secondary-fixed-variant": "#404b1b",
+                      "on-error": "#ffffff",
+                      "bg-panel": "#F0EAE1",
+                      "surface-container-high": "#f8e4de",
+                      "primary": "#9a4019",
+                      "secondary-fixed-dim": "#bfcd8f",
+                      "surface-variant": "#f2ded8",
+                      "on-primary": "#ffffff",
+                      "primary-fixed": "#ffdbce",
+                      "surface-container-highest": "#f2ded8",
+                      "secondary": "#586330",
+                      "secondary-container": "#d8e6a6",
+                      "error": "#ba1a1a",
+                      "bg-main": "#F9F6F0",
+                      "outline": "#89726a",
+                      "on-tertiary-container": "#f8fdff",
+                      "surface-bright": "#fff8f6",
+                      "inverse-on-surface": "#ffede7",
+                      "on-surface-variant": "#56423b",
+                      "inverse-surface": "#392e2a",
+                      "text-muted": "#706253",
+                      "secondary-fixed": "#dbe9a9",
+                      "surface-tint": "#9e421b",
+                      "status-draft": "#D4A373",
+                      "on-surface": "#231916",
+                      "surface": "#fff8f6",
+                      "outline-variant": "#dcc1b7",
+                      "surface-dim": "#e9d6d0",
+                      "tertiary-fixed-dim": "#73d4e8",
+                      "on-secondary-container": "#5c6834",
+                      "surface-container-lowest": "#ffffff",
+                      "tertiary": "#006674",
+                      "background": "#fff8f6",
+                      "on-error-container": "#93000a",
+                      "inverse-primary": "#ffb59a",
+                      "on-primary-fixed": "#370d00",
+                      "tertiary-fixed": "#a2eeff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "stack": "1rem",
+                      "panel-content": "65vw",
+                      "panel-sidebar": "35vw",
+                      "gutter": "1.5rem",
+                      "container-padding": "2rem"
+              },
+              "fontFamily": {
+                      "headline-md": ["Manrope", "sans-serif"],
+                      "body-lg": ["Work Sans", "sans-serif"],
+                      "body-sm": ["Work Sans", "sans-serif"],
+                      "label-caps": ["Work Sans", "sans-serif"],
+                      "headline-lg": ["Manrope", "sans-serif"]
+              },
+              "fontSize": {
+                      "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                      "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #F9F6F0;
+            color: #2C2520;
+            font-family: 'Work Sans', sans-serif;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #dcc1b7;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="h-screen overflow-hidden flex flex-col">
+<!-- Top Navigation Bar (Component 1) -->
+<header class="h-16 w-full flex-shrink-0 bg-bg-main border-b border-outline-variant flex justify-between items-center px-gutter z-50">
+<div class="font-headline-md text-headline-md font-bold text-primary">
+            Curaduría Cultural
+        </div>
+<nav class="hidden md:flex gap-8 items-center">
+<a class="font-body-sm text-body-sm text-primary border-b-2 border-primary pb-1" href="#">Archivo</a>
+<a class="font-body-sm text-body-sm text-text-muted hover:text-primary transition-colors duration-200" href="#">Calendario</a>
+<a class="font-body-sm text-body-sm text-text-muted hover:text-primary transition-colors duration-200" href="#">Colecciones</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="text-text-muted hover:text-primary transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="text-text-muted hover:text-primary transition-colors">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-outline-variant overflow-hidden">
+<img alt="Avatar del curador" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCBDNZWjLCaCxhNIm7vfrM2e7VgVTmPkrxcFOJkzmMg9wtSyZ_GrLkOwRI47UO84IlbWMnhD8YoiIYpgbvS9z45i7A59xQ3V3ImRbnPZW9fIz6eqiJrwFxrg6hqMVlDxlS99aDen-q9aUCXBgxpFqSc5Oza1yhC2b-fNJ7vnlC6ptHX8ayygEvAoKForeO2tAv-bEMacSed1ejpBNmP8UybSh9k_ta6UGRxEggx61_GZHKrvo4kxMngNfa5RDhYC4mU7W3mD1ltiMA"/>
+</div>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<!-- Narrow Side Navigation Bar (Hidden on Mobile) -->
+<nav class="hidden md:flex flex-col w-16 bg-bg-panel border-r border-outline-variant items-center py-6 gap-8 z-40 flex-shrink-0">
+<button class="flex items-center justify-center bg-secondary-container text-on-secondary-container rounded-full w-10 h-10 transition-transform active:scale-95" title="Eventos">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">event</span>
+</button>
+<button class="flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high rounded-full w-10 h-10 transition-transform active:scale-95" title="Curaduría">
+<span class="material-symbols-outlined">palette</span>
+</button>
+<button class="flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high rounded-full w-10 h-10 transition-transform active:scale-95" title="Artistas">
+<span class="material-symbols-outlined">group</span>
+</button>
+<button class="flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high rounded-full w-10 h-10 transition-transform active:scale-95 mt-auto" title="Reportes">
+<span class="material-symbols-outlined">analytics</span>
+</button>
+</nav>
+<!-- Split Layout Wrapper -->
+<div class="flex flex-1 overflow-hidden">
+<!-- Left Panel: Sidebar (35% width, Static Form) -->
+<aside class="w-[35vw] bg-bg-panel border-r border-outline-variant p-gutter overflow-y-auto custom-scrollbar flex-shrink-0">
+<div class="flex flex-col gap-6">
+<div>
+<h2 class="font-headline-md text-headline-md text-text-main mb-1">Nuevo Evento</h2>
+<p class="font-body-sm text-body-sm text-text-muted">Añade una nueva exposición o actividad al archivo cultural.</p>
+</div>
+<form class="flex flex-col gap-5">
+<div class="flex flex-col gap-2">
+<label class="font-label-caps text-label-caps text-on-surface-variant uppercase">Nombre del Evento</label>
+<input class="w-full bg-white border border-outline-variant rounded-lg p-3 text-body-lg focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all" placeholder="Ej. Retrospectiva de Arte Moderno" type="text"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-label-caps text-label-caps text-on-surface-variant uppercase">Fecha de Inicio</label>
+<div class="relative">
+<input class="w-full bg-white border border-outline-variant rounded-lg p-3 text-body-lg focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all" type="date"/>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-label-caps text-label-caps text-on-surface-variant uppercase">Categoría</label>
+<select class="w-full bg-white border border-outline-variant rounded-lg p-3 text-body-lg focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all appearance-none">
+<option>Exposición Temporal</option>
+<option>Taller Educativo</option>
+<option>Concierto de Cámara</option>
+<option>Charla Curatorial</option>
+</select>
+</div>
+<div class="flex items-center justify-between bg-surface-container-low p-4 rounded-lg border border-outline-variant">
+<div class="flex flex-col">
+<span class="font-body-lg text-text-main">Estado de Publicación</span>
+<span class="font-body-sm text-status-draft" id="status-label">Borrador</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" id="status-toggle" onchange="document.getElementById('status-label').innerText = this.checked ? 'Publicado' : 'Borrador'; document.getElementById('status-label').className = this.checked ? 'font-body-sm text-secondary' : 'font-body-sm text-status-draft';" type="checkbox"/>
+<div class="w-11 h-6 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<button class="w-full bg-primary text-white font-headline-md text-headline-md py-4 rounded-lg hover:bg-primary-container active:scale-[0.98] transition-all mt-4 flex items-center justify-center gap-2" type="submit">
+<span class="material-symbols-outlined">add_circle</span>
+                            Crear Evento
+                        </button>
+</form>
+</div>
+</aside>
+<!-- Right Panel: Main Content (65% width, Scrollable Grid) -->
+<main class="flex-1 bg-bg-main overflow-y-auto custom-scrollbar p-gutter">
+<div class="flex items-center justify-between mb-8">
+<h1 class="font-headline-lg text-headline-lg text-text-main">Archivo Central</h1>
+<div class="flex gap-2">
+<button class="p-2 border border-outline-variant rounded-lg hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-text-muted">grid_view</span>
+</button>
+<button class="p-2 border border-outline-variant rounded-lg hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-text-muted">list</span>
+</button>
+</div>
+</div>
+<!-- Bento-style Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+<!-- Event Card 1 -->
+<article class="bg-white border border-outline-variant rounded-lg p-5 flex flex-col gap-4 hover:border-primary transition-all group">
+<div class="flex justify-between items-start">
+<span class="px-2 py-1 bg-secondary-container text-on-secondary-container font-label-caps text-label-caps rounded-full">PUBLICADO</span>
+<span class="material-symbols-outlined text-outline group-hover:text-primary">more_horiz</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-text-main group-hover:text-primary transition-colors">Vanguardias Latinoamericanas</h3>
+<p class="font-body-sm text-body-sm text-text-muted mt-1">12 Oct - 24 Nov, 2023</p>
+</div>
+<div class="mt-auto pt-4 border-t border-outline-variant/30 flex flex-col gap-3">
+<div class="flex items-center gap-3 bg-weather-normal/40 p-3 rounded-lg">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">light_mode</span>
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-on-surface-variant">CLIMA: ÓPTIMO</span>
+<span class="text-[10px] text-text-muted italic">Condiciones ideales para transporte de obra.</span>
+</div>
+</div>
+</div>
+</article>
+<!-- Event Card 2 -->
+<article class="bg-white border border-outline-variant rounded-lg p-5 flex flex-col gap-4 hover:border-primary transition-all group">
+<div class="flex justify-between items-start">
+<span class="px-2 py-1 bg-status-draft/20 text-status-draft font-label-caps text-label-caps rounded-full">BORRADOR</span>
+<span class="material-symbols-outlined text-outline">more_horiz</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-text-main group-hover:text-primary transition-colors">Poesía en la Terraza</h3>
+<p class="font-body-sm text-body-sm text-text-muted mt-1">05 Dic, 2023</p>
+</div>
+<div class="mt-auto pt-4 border-t border-outline-variant/30 flex flex-col gap-3">
+<div class="flex items-center gap-3 bg-error-container/40 p-3 rounded-lg border border-error/20">
+<span class="material-symbols-outlined text-error" style="font-variation-settings: 'FILL' 1;">thunderstorm</span>
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-error">ALERTA: CRÍTICA</span>
+<span class="text-[10px] text-error/80 italic">Riesgo de filtración. Mover piezas de papel.</span>
+</div>
+</div>
+</div>
+</article>
+<!-- Event Card 3 -->
+<article class="bg-white border border-outline-variant rounded-lg p-5 flex flex-col gap-4 hover:border-primary transition-all group">
+<div class="flex justify-between items-start">
+<span class="px-2 py-1 bg-secondary-container text-on-secondary-container font-label-caps text-label-caps rounded-full">PUBLICADO</span>
+<span class="material-symbols-outlined text-outline">more_horiz</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-text-main group-hover:text-primary transition-colors">Morfología del Paisaje</h3>
+<p class="font-body-sm text-body-sm text-text-muted mt-1">15 Nov - 10 Ene, 2024</p>
+</div>
+<div class="mt-auto pt-4 border-t border-outline-variant/30 flex flex-col gap-3">
+<div class="flex items-center gap-3 bg-weather-risk/40 p-3 rounded-lg">
+<span class="material-symbols-outlined text-on-secondary-fixed-variant" style="font-variation-settings: 'FILL' 1;">cloud_queue</span>
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-on-surface-variant">CLIMA: ALTA HUMEDAD</span>
+<span class="text-[10px] text-text-muted italic">Monitorear higrómetros en sala 4.</span>
+</div>
+</div>
+</div>
+</article>
+<!-- Event Card 4 -->
+<article class="bg-white border border-outline-variant rounded-lg p-5 flex flex-col gap-4 hover:border-primary transition-all group">
+<div class="flex justify-between items-start">
+<span class="px-2 py-1 bg-secondary-container text-on-secondary-container font-label-caps text-label-caps rounded-full">PUBLICADO</span>
+<span class="material-symbols-outlined text-outline">more_horiz</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-text-main group-hover:text-primary transition-colors">Abstracción Sonora</h3>
+<p class="font-body-sm text-body-sm text-text-muted mt-1">01 Ene - 15 Feb, 2024</p>
+</div>
+<div class="mt-auto pt-4 border-t border-outline-variant/30 flex flex-col gap-3">
+<div class="flex items-center gap-3 bg-weather-normal/40 p-3 rounded-lg">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">wb_sunny</span>
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-on-surface-variant">CLIMA: ESTABLE</span>
+<span class="text-[10px] text-text-muted italic">Control térmico operativo.</span>
+</div>
+</div>
+</div>
+</article>
+<!-- Stats Card (Bento Style) -->
+<article class="bg-primary-fixed text-on-primary-fixed rounded-lg p-5 flex flex-col justify-between overflow-hidden relative min-h-[180px]">
+<span class="font-label-caps text-label-caps uppercase opacity-80">Métrica del Mes</span>
+<div class="z-10">
+<h4 class="text-4xl font-bold leading-none">12</h4>
+<p class="font-body-sm text-body-sm">Eventos Activos</p>
+</div>
+<span class="material-symbols-outlined absolute -right-4 -bottom-4 text-[120px] opacity-10">palette</span>
+</article>
+</div>
+</main>
+</div>
+</div>
+<script>
+        // Micro-interaction for the "Add Event" button
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            const originalContent = btn.innerHTML;
+            
+            btn.innerHTML = '<span class="material-symbols-outlined animate-spin">sync</span> Procesando...';
+            btn.classList.add('opacity-80');
+            
+            setTimeout(() => {
+                btn.innerHTML = '<span class="material-symbols-outlined">check_circle</span> Evento Registrado';
+                btn.classList.remove('bg-primary');
+                btn.classList.add('bg-secondary');
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalContent;
+                    btn.classList.remove('bg-secondary', 'opacity-80');
+                    btn.classList.add('bg-primary');
+                    e.target.reset();
+                    document.getElementById('status-label').innerText = 'Borrador';
+                    document.getElementById('status-label').className = 'font-body-sm text-status-draft';
+                }, 2000);
+            }, 1000);
+        });
+    </script>
+</body></html>

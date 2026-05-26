@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestor de Curaduría Cultural</title>
+    <!-- Google Fonts & Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Work+Sans:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <!-- Custom Vanilla Stylesheet -->
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body class="h-screen overflow-hidden flex flex-col">
+
+    <!-- Top Navigation Bar -->
+    <header class="top-nav">
+        <div class="logo">
+            Curaduría Cultural
+        </div>
+        <nav class="main-nav">
+            <a href="#" class="nav-link active">Archivo</a>
+            <a href="#" class="nav-link">Calendario</a>
+            <a href="#" class="nav-link">Colecciones</a>
+        </nav>
+        <div class="user-actions">
+            <button class="action-btn" title="Notificaciones">
+                <span class="material-symbols-outlined">notifications</span>
+            </button>
+            <button class="action-btn" title="Configuración">
+                <span class="material-symbols-outlined">settings</span>
+            </button>
+            <div class="avatar-container">
+                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCBDNZWjLCaCxhNIm7vfrM2e7VgVTmPkrxcFOJkzmMg9wtSyZ_GrLkOwRI47UO84IlbWMnhD8YoiIYpgbvS9z45i7A59xQ3V3ImRbnPZW9fIz6eqiJrwFxrg6hqMVlDxlS99aDen-q9aUCXBgxpFqSc5Oza1yhC2b-fNJ7vnlC6ptHX8ayygEvAoKForeO2tAv-bEMacSed1ejpBNmP8UybSh9k_ta6UGRxEggx61_GZHKrvo4kxMngNfa5RDhYC4mU7W3mD1ltiMA" alt="Avatar del curador">
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Layout Workspace -->
+    <div class="flex-workspace">
+        
+        <!-- Narrow Side Navigation Bar -->
+        <nav class="side-nav">
+            <button class="side-nav-btn active" title="Eventos">
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">event</span>
+            </button>
+            <button class="side-nav-btn" title="Curaduría">
+                <span class="material-symbols-outlined">palette</span>
+            </button>
+            <button class="side-nav-btn" title="Artistas">
+                <span class="material-symbols-outlined">group</span>
+            </button>
+            <button class="side-nav-btn reportes-btn" title="Reportes">
+                <span class="material-symbols-outlined">analytics</span>
+            </button>
+        </nav>
+
+        <!-- Split Layout Wrapper -->
+        <div class="split-layout">
+            
+            <!-- Left Panel: Form Sidebar (35% width, Fixed) -->
+            <aside class="left-panel">
+                <div class="form-container">
+                    <div class="form-header">
+                        <h2>Nuevo Evento</h2>
+                        <p>Añade una nueva exposición o actividad al archivo cultural.</p>
+                    </div>
+                    
+                    <form id="evento-form" class="form-body">
+                        <!-- Nombre del Evento -->
+                        <div class="form-group">
+                            <label for="titulo" class="input-label">Nombre del Evento</label>
+                            <input type="text" id="titulo" name="titulo" class="form-input" placeholder="Ej. Retrospectiva de Arte Moderno" required>
+                        </div>
+
+                        <!-- Categoría / Disciplina -->
+                        <div class="form-group">
+                            <label for="disciplina" class="input-label">Categoría / Disciplina</label>
+                            <select id="disciplina" name="disciplina" class="form-select" required>
+                                <option value="" disabled selected>Selecciona una disciplina</option>
+                                <option value="Fotografía">Fotografía</option>
+                                <option value="Feria de Diseño">Feria de Diseño</option>
+                                <option value="Literatura">Literatura</option>
+                                <option value="Exposición Temporal">Exposición Temporal</option>
+                                <option value="Taller Educativo">Taller Educativo</option>
+                                <option value="Concierto de Cámara">Concierto de Cámara</option>
+                                <option value="Charla Curatorial">Charla Curatorial</option>
+                            </select>
+                        </div>
+
+                        <!-- Fecha y Hora -->
+                        <div class="form-group">
+                            <label for="fecha_hora" class="input-label">Fecha y Hora de Inicio</label>
+                            <input type="datetime-local" id="fecha_hora" name="fecha_hora" class="form-input" required>
+                        </div>
+
+                        <!-- Dirección Original (Campo agregado de forma armoniosa según Stich) -->
+                        <div class="form-group">
+                            <label for="direccion_original" class="input-label">Dirección física</label>
+                            <input type="text" id="direccion_original" name="direccion_original" class="form-input" placeholder="Ej. Defensa 1100, San Telmo, Buenos Aires" required>
+                        </div>
+
+                        <!-- Estado de Publicación Switch -->
+                        <div class="form-toggle-card">
+                            <div class="toggle-info">
+                                <span class="toggle-title">Estado de Publicación</span>
+                                <span id="status-label" class="toggle-status draft">Borrador</span>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="estado-toggle">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
+                        <!-- Botón Enviar -->
+                        <button type="submit" id="submit-btn" class="submit-button">
+                            <span class="material-symbols-outlined">add_circle</span>
+                            <span>Crear Evento</span>
+                        </button>
+                    </form>
+                </div>
+            </aside>
+
+            <!-- Right Panel: Main Scrollable Content (65% width) -->
+            <main class="right-panel">
+                <div class="main-header">
+                    <h1>Archivo Central</h1>
+                    <div class="view-controls">
+                        <button class="control-btn active" title="Vista de Grilla">
+                            <span class="material-symbols-outlined">grid_view</span>
+                        </button>
+                        <button class="control-btn" title="Vista de Lista">
+                            <span class="material-symbols-outlined">list</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Bento Grid for Event Cards -->
+                <div id="eventos-grid" class="bento-grid">
+                    
+                    <!-- Las tarjetas de eventos se inyectan dinámicamente aquí mediante JS -->
+                    
+                    <!-- Stats Card (Bento Style) - Se inyectará estáticamente al final -->
+                    <article class="stats-card" id="stats-card">
+                        <span class="stats-label">Métricas del Mes</span>
+                        <div class="stats-content">
+                            <h4 id="stats-total-active">0</h4>
+                            <p>Eventos Activos</p>
+                        </div>
+                        <span class="material-symbols-outlined stats-icon">palette</span>
+                    </article>
+                    
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Frontend logic script -->
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

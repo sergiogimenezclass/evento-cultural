@@ -1,0 +1,15 @@
+# Caches de Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+
+# Base de datos local
+eventos.db
+eventos.db-journal
+
+# Entornos virtuales
+venv/
+.venv/
+env/
